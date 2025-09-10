@@ -1,0 +1,12 @@
+# Not .json
+# Not .circom
+
+*.wtns
+*.r1cs
+*.sym
+*.wasm
+*_js/
+
+
+*.json
+!*input*.json
