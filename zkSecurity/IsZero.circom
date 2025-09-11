@@ -5,9 +5,9 @@ template IsZero() {
   signal output out;
   signal inv;
 
-  inv <-- in!=0 ? 1/in : 0;
-  out <-- -in*inv +1;
-  out === -in*inv +1;
+  inv <-- in!=0 ? 1 / in : 0;
+  out <-- -in * inv + 1;
+  out === -in * inv + 1;
 }
 
 component main{public [in]} = IsZero();

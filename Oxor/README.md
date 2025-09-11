@@ -2,20 +2,20 @@
 
 ## Original circuit intentions
 
-The circuit should work as describes:
+The circuit should work as described:
 
-- `a * b == 1` (either both 1, or one is the multiplicative inverse of the other)
+- `inv` is calculated as the multiplicative inverse of `in`
 
-- `i == a * b` (so i == 1, from previous statement)
+- `out` is calculated and constrained as `-in * inv + 1`
 
-- `out == i * c` (the returned value should be equal to c since i == 1)
-
-But since the constrains allow an `i` different than 1, we can manage to generate a valid proof with an `out` different than `c`.
+- The last constraint ensures `in == 0 || out == 0`
 
 ## Writing the exploit
 
-In the [`exploit.circom`](/Rareskills/exploit.circom) file, `i` is added as an input, and calculations are commented out.
+I don't actually believe this code can be exploited.
 
-In the [`/input_exploit.json`](/Rareskills/input_exploit.json) file, `i` is set to give an `out` 100 times higher than `c`. The witness_exploit generated passes the verification successfully.
+The last constraint, `in * out === 0`, ensures at least one of these variables is equal to 0. Since we're in a finite field with `p` as a prime number, it is not possible to satisfy `-in * inv + 1 == 1` (simplified to `-in * inv == 0 (mod p)`), because it would mean that `-in * inv` results in a multiple of the prime number, which is impossible.
 
-Running `make exploit` generates a valid proof where `out` is 100 times higher than `c` (`out = 500` in the default configuration, feel free to fiddle with the variables to see it change).
+In short, we have either `in = 0` and `out` will be calculated as `1` by the first constraint, or `in > 0` and `out` must be `1` by the second constraint, so no exploit is possible here.
+
+Feel free to experiment with the [`input_exploit.json`](./input_exploit.json) file to wrap your head around this :)
